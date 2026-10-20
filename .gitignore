@@ -1,0 +1,14 @@
+.gradle
+.idea
+build
+out
+.DS_Store
+*.iml
+node_modules
+src/main/resources/public/dist
+src/main/resources/ssr
+src/main/webapp/users
+docker
+!.idea/codeStyles/
+!.idea/codeStyles/Project.xml
+!.idea/codeStyles/codeStyleConfig.xml

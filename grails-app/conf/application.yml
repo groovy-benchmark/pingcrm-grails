@@ -1,0 +1,159 @@
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+        repoUrl: 'https://github.com/matrei/pingcrm-grails'
+# Uncomment for enabling h2 database console (also look at grails.plugin.springsecurity below)
+# spring.h2.console.enabled: true
+grails:
+    controllers:
+        upload:
+            maxFileSize: 524288
+            maxRequestSize: 1048576
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            all: '*/*'
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            form: application/x-www-form-urlencoded
+            html:
+              - text/html
+              - application/xhtml+xml
+            js: text/javascript
+            json:
+              - application/json
+              - text/json
+            multipartForm: multipart/form-data
+            pdf: application/pdf
+            rss: application/rss+xml
+            text: text/plain
+            hal:
+              - application/hal+json
+              - application/hal+xml
+            xml:
+              - text/xml
+              - application/xml
+    urlmapping:
+        cache:
+            maxsize: 1000
+    converters:
+        encoding: UTF-8
+    views:
+        default:
+            codec: html
+        gsp:
+            encoding: UTF-8
+            htmlcodec: xml
+            codecs:
+                expression: html
+                scriptlet: html
+                taglib: none
+                staticparts: none
+    plugin:
+        springsecurity:
+            auth.loginFormUrl: /login
+            authority.className: pingcrm.auth.Role
+            userLookup:
+                userDomainClassName: pingcrm.User
+                authorityJoinClassName: pingcrm.auth.UserRole
+            rememberMe:
+                cookieName: pingcrm-remember-me
+                key: this-should-be-unique-per-application
+                sameSite: Lax
+            controllerAnnotations.staticRules:
+                - pattern: '/'
+                  access: ['permitAll']
+                - pattern: '/error'
+                  access: ['permitAll']
+                - pattern: '/**/favicon.ico'
+                  access: ['permitAll']
+                - pattern: '/static/**'
+                  access: ['permitAll']
+                # Uncomment to enable access to h2 database console (also look at spring.h2.console.enabled above)
+                # - pattern: '/h2-console/**'
+                #   access: ['permitAll']
+            filterChain.chainMap:
+                - pattern: '/**/favicon.ico'
+                  filters: 'none'
+                - pattern: '/static/**'
+                  filters: 'none'
+                # Uncomment to enable access to h2 database console (also look at spring.h2.console.enabled above)
+                # - pattern: '/h2-console/**'
+                #   filters: 'none'
+                - pattern: '/**'
+                  filters: 'JOINED_FILTERS'
+hibernate:
+    cache:
+        queries: false
+        use_second_level_cache: false
+        use_query_cache: false
+    jdbc:
+        time_zone: UTC
+dataSource:
+    dbCreate: create-drop
+    url: jdbc:h2:mem:testDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE;TIME ZONE=UTC
+    pooled: true
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    # Uncomment the next two lines to log SQL queries (also look in logback.xml)
+    #logSql: true
+    #formatSql: true
+    properties: # https://github.com/brettwooldridge/HikariCP#gear-configuration-knobs-baby
+        # autoCommit: true # Default: true
+        # connectionTimeout: 30000 # Default: 30000 (30 seconds)
+        # idleTimeout: 600000 # Default: 600000 (10 minutes)
+        # keepAliveTime: 0 # Default: 0 (disabled)
+        # maxLifetime: 1800000 # Default: 1800000 (30 minutes)
+        # connectionTextQuery: SELECT 1 # Should not be used on JDBC 4+ drivers
+        # minimumIdle: 10 # Default: same as maximumPoolSize
+        # maximumPoolSize: 10 # Default: 10
+        # healthCheckProperties: # This property is only available via programmatic configuration or IoC container.
+        # poolName: myJdbcConnectionPool # Default: auto-generated
+        # initializationFailTimeout: 1 # Default: 1 (second)
+        # isolateInternalQueries: false # Default: false
+        # allowPoolSuspension: false # Default: false
+        # readOnly: false # Default: false
+        # registerMbeans: false # Default: false
+        # catalog: someCatalog # Default: driver default
+        # connectionInitSql: SELECT 1 # Default: none
+        # transactionIsolation: TRANSACTION_READ_COMMITTED # Default: default isolate level (H2 = read committed)
+        # validationTimeout: 5000 # Default: 5000 (5 seconds)
+        # leakDetectionThreshold: 0 # Default: 0 (disabled)
+        # dataSource: # This property is only available via programmatic configuration or IoC container.
+        # schema: # Default: none
+        # threadFactory: # This property is only available via programmatic configuration or IoC container.
+        # scheduledExecutor: # This property is only available via programmatic configuration or IoC container.
+
+environments.test.dataSource.dbCreate: update
+server:
+    servlet:
+        session:
+            cookie:
+                same-site: Lax
+    forward-headers-strategy: NATIVE
+    tomcat:
+        max-swallow-size: 1MB
+        max-http-form-post-size: 1MB
+        redirect-context-root: false
+    error:
+        whitelabel:
+          enabled: false
+inertia:
+    manifest:
+        location: 'classpath:public/dist/.vite/manifest.json'
+    ssr:
+        enabled: false
+csrf:
+    excluded:
+        - '/login/authAjax'
