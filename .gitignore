@@ -12,3 +12,10 @@ docker
 !.idea/codeStyles/
 !.idea/codeStyles/Project.xml
 !.idea/codeStyles/codeStyleConfig.xml
+
+# Claude
+.claude/
+CLAUDE.md
+CLAUDE-SECURITY-*/
+claude_security_results/
+/*.sarif
